@@ -131,64 +131,21 @@ export class ConnectionMonitor {
     
     for (let attempt = 0; attempt <= this.retryAttempts; attempt++) {
       try {
-        // If proxy is disabled, only try direct request
-        if (!this.config.useProxy) {
-          await axios.get(endpoint.url, { 
-            timeout: 5000,
-            headers: {
-              'Accept': 'application/json,text/plain,*/*',
-              'Cache-Control': 'no-cache'
-            }
-          });
-          
-          const latency = performance.now() - startTime;
-          this.updateEndpoint(endpoint.id, { 
-            status: latency > 1000 ? 'warning' : 'ok',
-            lastError: latency > 1000 ? 'High latency detected' : undefined
-          });
-          
-          return latency;
-        }
-
-        // If proxy is enabled, try direct request first, then fallback to proxy
-        try {
-          await axios.get(endpoint.url, { 
-            timeout: 5000,
-            headers: {
-              'Accept': 'application/json,text/plain,*/*',
-              'Cache-Control': 'no-cache'
-            }
-          });
-          
-          const latency = performance.now() - startTime;
-          this.updateEndpoint(endpoint.id, { 
-            status: latency > 1000 ? 'warning' : 'ok',
-            lastError: latency > 1000 ? 'High latency detected' : undefined
-          });
-          
-          return latency;
-        } catch (err) {
-          const error = err as Error;
-          if (error.message.includes('CORS') || error.message.includes('Network Error')) {
-            const proxyUrl = `/api/proxy?url=${encodeURIComponent(endpoint.url)}`;
-            await axios.get(proxyUrl, { 
-              timeout: 5000,
-              headers: {
-                'Accept': 'application/json,text/plain,*/*',
-                'Cache-Control': 'no-cache'
-              }
-            });
-            
-            const latency = performance.now() - startTime;
-            this.updateEndpoint(endpoint.id, { 
-              status: latency > 1000 ? 'warning' : 'ok',
-              lastError: latency > 1000 ? 'High latency detected' : undefined
-            });
-            
-            return latency;
+        await axios.get(endpoint.url, { 
+          timeout: 5000,
+          headers: {
+            'Accept': 'application/json,text/plain,*/*',
+            'Cache-Control': 'no-cache'
           }
-          throw error;
-        }
+        });
+        
+        const latency = performance.now() - startTime;
+        this.updateEndpoint(endpoint.id, { 
+          status: latency > 1000 ? 'warning' : 'ok',
+          lastError: latency > 1000 ? 'High latency detected' : undefined
+        });
+        
+        return latency;
       } catch (error) {
         if (attempt === this.retryAttempts) {
           console.error(`Request failed for ${endpoint.name}:`, error);
