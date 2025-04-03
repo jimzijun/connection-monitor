@@ -349,7 +349,7 @@ export default function EndpointSelector() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h3 className="text-2xl font-semibold text-white mb-1">Connection Monitor</h3>
-          <p className="text-gray-400 text-sm">Monitor your endpoints' latency and download speeds</p>
+          <p className="text-gray-400 text-sm">Monitor your endpoints&apos; latency and download speeds</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
