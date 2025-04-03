@@ -86,7 +86,7 @@ export default function ConnectionGraph() {
   const [isUpdating] = useState(true);
   const [updateInterval, setUpdateInterval] = useState(5);
   const monitor = useRef(ConnectionMonitor.getInstance());
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const updateMetrics = async () => {
     try {
