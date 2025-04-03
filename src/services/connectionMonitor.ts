@@ -350,9 +350,12 @@ export class ConnectionMonitor {
   }
 
   async fetchLatency(): Promise<number> {
+    const latencyEndpoint = this.getEnabledEndpoints('latency')[0];
+    if (!latencyEndpoint) return -1;
+    
     const start = performance.now();
     try {
-      await fetch(this.endpoint.url);
+      await fetch(latencyEndpoint.url);
       const end = performance.now();
       return Math.round(end - start);
     } catch {
@@ -361,8 +364,11 @@ export class ConnectionMonitor {
   }
 
   async fetchDownloadSpeed(): Promise<number> {
+    const speedEndpoint = this.getEnabledEndpoints('speed')[0];
+    if (!speedEndpoint) return -1;
+    
     try {
-      await fetch(this.endpoint.url);
+      await fetch(speedEndpoint.url);
       return Math.round(Math.random() * 100) / 10; // Simulated download speed
     } catch {
       return -1;
@@ -370,8 +376,11 @@ export class ConnectionMonitor {
   }
 
   async fetchUploadSpeed(): Promise<number> {
+    const speedEndpoint = this.getEnabledEndpoints('speed')[0];
+    if (!speedEndpoint) return -1;
+    
     try {
-      await fetch(this.endpoint.url);
+      await fetch(speedEndpoint.url);
       return Math.round(Math.random() * 50) / 10; // Simulated upload speed
     } catch {
       return -1;
