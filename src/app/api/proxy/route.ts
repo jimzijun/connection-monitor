@@ -56,4 +56,9 @@ export async function GET(request: Request) {
       status: error.response?.status || 500 
     });
   }
+}
+
+export async function POST(request: Request): Promise<Response> {
+  const data: { url: string } = await request.json();
+  // ... existing code ...
 } 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { EndpointConfig, ConnectionMonitor, ConnectionMetrics } from '../services/connectionMonitor';
 
 interface EndpointMetrics {
@@ -16,7 +16,7 @@ interface EditingEndpoint {
   url: string;
 }
 
-export function EndpointSelector() {
+export default function EndpointSelector() {
   const [endpoints, setEndpoints] = React.useState<EndpointConfig[]>([]);
   const [metrics, setMetrics] = useState<EndpointMetrics>({});
   const [editingEndpoint, setEditingEndpoint] = useState<EditingEndpoint | null>(null);

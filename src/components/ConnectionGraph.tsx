@@ -81,10 +81,12 @@ const options = {
 };
 
 export default function ConnectionGraph() {
-  const [metrics, setMetrics] = useState<ConnectionMetrics[]>([]);
+  const [data, setData] = useState<ConnectionMetrics[]>([]);
   const [status, setStatus] = useState<'good' | 'fair' | 'poor'>('poor');
   const [isUpdating, setIsUpdating] = useState(true);
   const [updateInterval, setUpdateInterval] = useState(5);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const monitor = useRef(ConnectionMonitor.getInstance());
   const intervalRef = useRef<NodeJS.Timeout>();
 
@@ -92,7 +94,7 @@ export default function ConnectionGraph() {
     try {
       await monitor.current.updateMetrics();
       const newMetrics = monitor.current.getMetrics();
-      setMetrics([...newMetrics]); // Create a new array to force re-render
+      setData([...newMetrics]); // Create a new array to force re-render
       const currentStatus = newMetrics[newMetrics.length - 1]?.status || 'poor';
       setStatus(currentStatus);
     } catch (error) {
@@ -102,7 +104,7 @@ export default function ConnectionGraph() {
 
   useEffect(() => {
     // Reset metrics array when interval changes
-    setMetrics([]);
+    setData([]);
     
     // Initial update
     updateMetrics();
@@ -123,27 +125,31 @@ export default function ConnectionGraph() {
     };
   }, [updateInterval]); // Add updateInterval to dependencies
 
-  const data = {
-    labels: metrics.map(m => new Date(m.timestamp).toLocaleTimeString()),
-    datasets: [
-      {
-        label: 'Latency (ms)',
-        data: metrics.map(m => m.latency === -1 ? null : m.latency),
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-        tension: 0.1,
-        yAxisID: 'y',
-      },
-      {
-        label: 'Download Speed (MB/s)',
-        data: metrics.map(m => m.downloadSpeed === -1 ? null : m.downloadSpeed),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        tension: 0.1,
-        yAxisID: 'y1',
-      },
-    ],
+  const formatData = (rawData: ConnectionMetrics[]) => {
+    return {
+      labels: rawData.map(m => new Date(m.timestamp).toLocaleTimeString()),
+      datasets: [
+        {
+          label: 'Latency (ms)',
+          data: rawData.map(m => m.latency === -1 ? null : m.latency),
+          borderColor: 'rgb(75, 192, 192)',
+          backgroundColor: 'rgba(75, 192, 192, 0.5)',
+          tension: 0.1,
+          yAxisID: 'y',
+        },
+        {
+          label: 'Download Speed (MB/s)',
+          data: rawData.map(m => m.downloadSpeed === -1 ? null : m.downloadSpeed),
+          borderColor: 'rgb(255, 99, 132)',
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+          tension: 0.1,
+          yAxisID: 'y1',
+        },
+      ],
+    };
   };
+
+  const data = formatData(data);
 
   const statusColors = {
     good: 'bg-green-500',

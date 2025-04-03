@@ -348,4 +348,33 @@ export class ConnectionMonitor {
   getMetrics(): ConnectionMetrics[] {
     return [...this.metrics]; // Return a copy to prevent external modifications
   }
+
+  async fetchLatency(): Promise<number> {
+    const start = performance.now();
+    try {
+      await fetch(this.endpoint.url);
+      const end = performance.now();
+      return Math.round(end - start);
+    } catch {
+      return -1;
+    }
+  }
+
+  async fetchDownloadSpeed(): Promise<number> {
+    try {
+      await fetch(this.endpoint.url);
+      return Math.round(Math.random() * 100) / 10; // Simulated download speed
+    } catch {
+      return -1;
+    }
+  }
+
+  async fetchUploadSpeed(): Promise<number> {
+    try {
+      await fetch(this.endpoint.url);
+      return Math.round(Math.random() * 50) / 10; // Simulated upload speed
+    } catch {
+      return -1;
+    }
+  }
 } 
