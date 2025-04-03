@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { EndpointConfig, ConnectionMonitor, ConnectionMetrics } from '../services/connectionMonitor';
+import React, { useState } from 'react';
+import { EndpointConfig, ConnectionMonitor } from '../services/connectionMonitor';
 
 interface EndpointMetrics {
   [key: string]: {
@@ -54,7 +54,7 @@ export default function EndpointSelector() {
     }, 5000); // Update every 5 seconds
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [monitor]); // Add monitor as a dependency
 
   const handleToggle = (id: string) => {
     const endpoint = endpoints.find(ep => ep.id === id);

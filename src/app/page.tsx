@@ -1,5 +1,5 @@
 import ConnectionGraph from '@/components/ConnectionGraph';
-import { EndpointSelector } from '@/components/EndpointSelector';
+import EndpointSelector from '@/components/EndpointSelector';
 import { Settings } from '@/components/Settings';
 
 export default function Home() {

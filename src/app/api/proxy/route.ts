@@ -22,7 +22,8 @@ export async function GET(request: Request): Promise<Response> {
     if (!ALLOWED_DOMAINS.includes(urlDomain)) {
       return new Response('Domain not allowed', { status: 403 });
     }
-  } catch (error) {
+  } catch (err) {
+    console.error('Invalid URL:', err);
     return new Response('Invalid URL', { status: 400 });
   }
 

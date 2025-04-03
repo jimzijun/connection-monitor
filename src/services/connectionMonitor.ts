@@ -133,7 +133,7 @@ export class ConnectionMonitor {
       try {
         // If proxy is disabled, only try direct request
         if (!this.config.useProxy) {
-          const response = await axios.get(endpoint.url, { 
+          await axios.get(endpoint.url, { 
             timeout: 5000,
             headers: {
               'Accept': 'application/json,text/plain,*/*',
@@ -152,7 +152,7 @@ export class ConnectionMonitor {
 
         // If proxy is enabled, try direct request first, then fallback to proxy
         try {
-          const response = await axios.get(endpoint.url, { 
+          await axios.get(endpoint.url, { 
             timeout: 5000,
             headers: {
               'Accept': 'application/json,text/plain,*/*',
@@ -171,7 +171,7 @@ export class ConnectionMonitor {
           const error = err as Error;
           if (error.message.includes('CORS') || error.message.includes('Network Error')) {
             const proxyUrl = `/api/proxy?url=${encodeURIComponent(endpoint.url)}`;
-            const response = await axios.get(proxyUrl, { 
+            await axios.get(proxyUrl, { 
               timeout: 5000,
               headers: {
                 'Accept': 'application/json,text/plain,*/*',

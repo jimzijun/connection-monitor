@@ -64,7 +64,7 @@ const options = {
   plugins: {
     tooltip: {
       callbacks: {
-        label: (context: any) => {
+        label: (context: { dataset: { label?: string }, parsed: { y: number | null } }) => {
           const label = context.dataset.label || '';
           const value = context.parsed.y;
           if (value === null) {
