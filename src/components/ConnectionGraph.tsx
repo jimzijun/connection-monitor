@@ -81,7 +81,7 @@ const options = {
 };
 
 export default function ConnectionGraph() {
-  const [data, setData] = useState<ConnectionMetrics[]>([]);
+  const [metrics, setMetrics] = useState<ConnectionMetrics[]>([]);
   const [status, setStatus] = useState<'good' | 'fair' | 'poor'>('poor');
   const [isUpdating, setIsUpdating] = useState(true);
   const [updateInterval, setUpdateInterval] = useState(5);
@@ -94,7 +94,7 @@ export default function ConnectionGraph() {
     try {
       await monitor.current.updateMetrics();
       const newMetrics = monitor.current.getMetrics();
-      setData([...newMetrics]); // Create a new array to force re-render
+      setMetrics([...newMetrics]); // Create a new array to force re-render
       const currentStatus = newMetrics[newMetrics.length - 1]?.status || 'poor';
       setStatus(currentStatus);
     } catch (error) {
@@ -104,7 +104,7 @@ export default function ConnectionGraph() {
 
   useEffect(() => {
     // Reset metrics array when interval changes
-    setData([]);
+    setMetrics([]);
     
     // Initial update
     updateMetrics();
@@ -149,7 +149,7 @@ export default function ConnectionGraph() {
     };
   };
 
-  const data = formatData(data);
+  const chartData = formatData(metrics);
 
   const statusColors = {
     good: 'bg-green-500',
@@ -191,7 +191,7 @@ export default function ConnectionGraph() {
         )}
       </div>
       <div className="h-[400px] bg-white rounded-lg shadow-lg p-4">
-        <Line options={options} data={data} />
+        <Line options={options} data={chartData} />
       </div>
     </div>
   );
