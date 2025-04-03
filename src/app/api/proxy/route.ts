@@ -1,6 +1,3 @@
-import { NextResponse } from 'next/server';
-import axios from 'axios';
-
 // List of allowed domains for security
 const ALLOWED_DOMAINS = [
   'api.github.com',

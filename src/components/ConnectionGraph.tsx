@@ -85,8 +85,6 @@ export default function ConnectionGraph() {
   const [status, setStatus] = useState<'good' | 'fair' | 'poor'>('poor');
   const [isUpdating] = useState(true);
   const [updateInterval, setUpdateInterval] = useState(5);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const monitor = useRef(ConnectionMonitor.getInstance());
   const intervalRef = useRef<NodeJS.Timeout>();
 
@@ -97,8 +95,8 @@ export default function ConnectionGraph() {
       setMetrics([...newMetrics]); // Create a new array to force re-render
       const currentStatus = newMetrics[newMetrics.length - 1]?.status || 'poor';
       setStatus(currentStatus);
-    } catch (error) {
-      console.error('Failed to update metrics:', error);
+    } catch (err) {
+      console.error('Error updating metrics:', err);
     }
   };
 
