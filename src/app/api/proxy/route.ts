@@ -8,57 +8,51 @@ const ALLOWED_DOMAINS = [
   'www.baidu.com'
 ];
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<Response> {
   const { searchParams } = new URL(request.url);
   const url = searchParams.get('url');
 
   if (!url) {
-    return NextResponse.json({ error: 'URL parameter is required' }, { status: 400 });
+    return new Response('Missing URL parameter', { status: 400 });
   }
 
   // Validate URL domain for security
   try {
     const urlDomain = new URL(url).hostname;
     if (!ALLOWED_DOMAINS.includes(urlDomain)) {
-      return NextResponse.json({ error: 'Domain not allowed' }, { status: 403 });
+      return new Response('Domain not allowed', { status: 403 });
     }
   } catch (error) {
-    return NextResponse.json({ error: 'Invalid URL' }, { status: 400 });
+    return new Response('Invalid URL', { status: 400 });
   }
 
   try {
-    const response = await axios.get(url, {
-      timeout: 5000,
-      maxRedirects: 5,
-      validateStatus: (status) => status < 500, // Accept all status codes less than 500
-      headers: {
-        'User-Agent': 'Connection-Monitor/1.0',
-        'Accept': 'application/json, text/plain, */*',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
-      }
+    const response = await fetch(url);
+    const data = await response.json();
+    return new Response(JSON.stringify(data), {
+      headers: { 'Content-Type': 'application/json' },
     });
-
-    return NextResponse.json({
-      data: response.data,
-      status: response.status,
-      headers: response.headers
-    });
-  } catch (error: any) {
-    console.error('Proxy request failed:', error.message);
-    
-    // Return more specific error information
-    return NextResponse.json({
-      error: 'Request failed',
-      details: error.message,
-      code: error.code
-    }, { 
-      status: error.response?.status || 500 
-    });
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    return new Response('Error fetching data', { status: 500 });
   }
 }
 
 export async function POST(request: Request): Promise<Response> {
-  const data: { url: string } = await request.json();
-  // ... existing code ...
+  const { url }: { url: string } = await request.json();
+
+  if (!url) {
+    return new Response('Missing URL parameter', { status: 400 });
+  }
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return new Response(JSON.stringify(data), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    return new Response('Error fetching data', { status: 500 });
+  }
 } 

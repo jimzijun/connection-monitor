@@ -83,7 +83,7 @@ const options = {
 export default function ConnectionGraph() {
   const [metrics, setMetrics] = useState<ConnectionMetrics[]>([]);
   const [status, setStatus] = useState<'good' | 'fair' | 'poor'>('poor');
-  const [isUpdating, setIsUpdating] = useState(true);
+  const [isUpdating] = useState(true);
   const [updateInterval, setUpdateInterval] = useState(5);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -125,29 +125,27 @@ export default function ConnectionGraph() {
     };
   }, [updateInterval]); // Add updateInterval to dependencies
 
-  const formatData = (rawData: ConnectionMetrics[]) => {
-    return {
-      labels: rawData.map(m => new Date(m.timestamp).toLocaleTimeString()),
-      datasets: [
-        {
-          label: 'Latency (ms)',
-          data: rawData.map(m => m.latency === -1 ? null : m.latency),
-          borderColor: 'rgb(75, 192, 192)',
-          backgroundColor: 'rgba(75, 192, 192, 0.5)',
-          tension: 0.1,
-          yAxisID: 'y',
-        },
-        {
-          label: 'Download Speed (MB/s)',
-          data: rawData.map(m => m.downloadSpeed === -1 ? null : m.downloadSpeed),
-          borderColor: 'rgb(255, 99, 132)',
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          tension: 0.1,
-          yAxisID: 'y1',
-        },
-      ],
-    };
-  };
+  const formatData = (rawData: ConnectionMetrics[]) => ({
+    labels: rawData.map(m => new Date(m.timestamp).toLocaleTimeString()),
+    datasets: [
+      {
+        label: 'Latency (ms)',
+        data: rawData.map(m => m.latency === -1 ? null : m.latency),
+        borderColor: 'rgb(75, 192, 192)',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        tension: 0.1,
+        yAxisID: 'y',
+      },
+      {
+        label: 'Download Speed (MB/s)',
+        data: rawData.map(m => m.downloadSpeed === -1 ? null : m.downloadSpeed),
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        tension: 0.1,
+        yAxisID: 'y1',
+      },
+    ],
+  });
 
   const chartData = formatData(metrics);
 
