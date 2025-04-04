@@ -1,5 +1,8 @@
 # Connection Monitor
 
+[![Docker Image](https://img.shields.io/docker/v/zijunyi/connection-monitor?sort=semver&logo=docker)](https://hub.docker.com/r/zijunyi/connection-monitor)
+[![Docker Pulls](https://img.shields.io/docker/pulls/zijunyi/connection-monitor?logo=docker)](https://hub.docker.com/r/zijunyi/connection-monitor)
+
 A real-time connection monitoring dashboard built with Next.js and Chart.js. Available as a Progressive Web App (PWA) with Docker containerization.
 
 ## Features
