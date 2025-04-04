@@ -352,10 +352,6 @@ export default function EndpointSelector() {
           <p className="text-gray-400 text-sm">Monitor your endpoints&apos; latency and download speeds</p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className={`w-2 h-2 rounded-full ${Object.values(metrics).some(m => m.latency && m.latency > 1000 || m.downloadSpeed && m.downloadSpeed < 0.01) ? 'bg-red-500' : 'bg-green-500'}`}></div>
-            <span className="text-sm text-gray-300">Status: {Object.values(metrics).some(m => m.latency && m.latency > 1000 || m.downloadSpeed && m.downloadSpeed < 0.01) ? 'Poor' : 'Good'}</span>
-          </div>
           <button
             onClick={handleReset}
             className="text-sm text-gray-400 hover:text-gray-300 flex items-center gap-1"

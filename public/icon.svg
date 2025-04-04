@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" fill="black"/>
-  <circle cx="256" cy="256" r="170" stroke="white" stroke-width="20"/>
-  <line x1="256" y1="86" x2="256" y2="426" stroke="white" stroke-width="20"/>
-  <line x1="86" y1="256" x2="426" y2="256" stroke="white" stroke-width="20"/>
+    <!-- Background circle -->
+    <circle cx="256" cy="256" r="240" fill="#4A90E2"/>
+    
+    <!-- Network nodes -->
+    <circle cx="256" cy="256" r="40" fill="white"/>
+    <circle cx="128" cy="256" r="30" fill="white"/>
+    <circle cx="384" cy="256" r="30" fill="white"/>
+    <circle cx="256" cy="128" r="30" fill="white"/>
+    <circle cx="256" cy="384" r="30" fill="white"/>
+    
+    <!-- Connection lines -->
+    <line x1="256" y1="216" x2="256" y2="296" stroke="white" stroke-width="8" stroke-linecap="round"/>
+    <line x1="158" y1="256" x2="354" y2="256" stroke="white" stroke-width="8" stroke-linecap="round"/>
+    <line x1="286" y1="158" x2="286" y2="354" stroke="white" stroke-width="8" stroke-linecap="round"/>
+    <line x1="226" y1="158" x2="226" y2="354" stroke="white" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Monitoring pulse -->
+    <circle cx="256" cy="256" r="60" stroke="white" stroke-width="4" stroke-dasharray="4 4" opacity="0.6">
+        <animate attributeName="r" values="60;70;60" dur="2s" repeatCount="indefinite"/>
+    </circle>
 </svg> 

@@ -161,18 +161,20 @@ export default function ConnectionGraph() {
 
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className={`h-3 w-3 rounded-full ${statusColors[status]}`} />
-          <span className="text-sm font-medium">
-            Status: {status.charAt(0).toUpperCase() + status.slice(1)}
-          </span>
-        </div>
-        <div className="text-sm text-gray-600">
-          {statusMessages[status]}
+      <div className="flex items-center justify-between bg-[var(--card-background)] p-4 rounded-lg">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <div className={`h-4 w-4 rounded-full ${statusColors[status]} animate-pulse`} />
+            <span className="text-lg font-semibold">
+              Status: {status.charAt(0).toUpperCase() + status.slice(1)}
+            </span>
+          </div>
+          <div className="text-sm text-gray-400">
+            {statusMessages[status]}
+          </div>
         </div>
         {isUpdating && (
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex items-center gap-2 text-sm text-gray-400">
             <span>Update interval:</span>
             <input
               type="range"

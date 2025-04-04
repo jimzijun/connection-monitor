@@ -22,7 +22,7 @@ export function Settings() {
         </svg>
         <div>
           <h3 className="text-white font-medium">Connection Settings</h3>
-          <p className="text-gray-400 text-sm">Configure how connection tests are performed</p>
+          <p className="text-gray-400 text-sm">Proxy will route tests through the web server</p>
         </div>
       </div>
       <div className="flex items-center gap-6">

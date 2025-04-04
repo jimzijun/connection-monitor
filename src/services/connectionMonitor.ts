@@ -46,22 +46,22 @@ export const DEFAULT_ENDPOINTS: EndpointConfig[] = [
   },
   {
     id: 'cloudflare-speedtest',
-    url: 'https://speed.cloudflare.com/__down',
+    url: 'https://speed.cloudflare.com/__down?bytes=1000000',
     name: 'Cloudflare CDN',
     enabled: true,
     type: 'speed'
   },
   {
-    id: 'azure-speedtest',
-    url: 'https://azureedge.net/',
-    name: 'Azure CDN',
+    id: 'fastly-speedtest',
+    url: 'https://www.fastly.com/favicon.ico',
+    name: 'Fastly CDN',
     enabled: true,
     type: 'speed'
   },
   {
-    id: 'aws-speedtest',
-    url: 'https://d1.awsstatic.com/site-images/aws-logo.svg',
-    name: 'AWS CloudFront',
+    id: 'jsdelivr-speedtest',
+    url: 'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
+    name: 'jsDelivr CDN',
     enabled: true,
     type: 'speed'
   }
@@ -77,8 +77,9 @@ export class ConnectionMonitor {
   private retryDelay: number = 1000;
   private endpoints: EndpointConfig[] = [...DEFAULT_ENDPOINTS];
   private config: MonitorConfig = {
-    useProxy: true
+    useProxy: false
   };
+  private baseUrl: string = '';
 
   private constructor() {}
 
@@ -87,6 +88,14 @@ export class ConnectionMonitor {
       ConnectionMonitor.instance = new ConnectionMonitor();
     }
     return ConnectionMonitor.instance;
+  }
+
+  setBaseUrl(url: string): void {
+    this.baseUrl = url;
+  }
+
+  getBaseUrl(): string {
+    return this.baseUrl;
   }
 
   getConfig(): MonitorConfig {
@@ -193,7 +202,7 @@ export class ConnectionMonitor {
       const startTime = performance.now();
       try {
         const url = this.config.useProxy ? 
-          `/api/proxy?url=${encodeURIComponent(endpoint.url)}` : 
+          `${this.baseUrl}/api/proxy?url=${encodeURIComponent(endpoint.url)}` : 
           endpoint.url;
 
         const response = await axios.get(url, {
