@@ -1,6 +1,6 @@
 # Connection Monitor
 
-A real-time connection monitoring dashboard built with Next.js and Chart.js.
+A real-time connection monitoring dashboard built with Next.js and Chart.js. Available as a Progressive Web App (PWA) with Docker containerization.
 
 ## Features
 
@@ -8,32 +8,55 @@ A real-time connection monitoring dashboard built with Next.js and Chart.js.
 - Interactive charts and visualizations
 - PWA support for offline access
 - Modern, responsive UI with Tailwind CSS
+- Multi-architecture Docker support (amd64/arm64)
 
-## Tech Stack
+## Docker Quick Start
 
-- Next.js 15
-- React 19
-- Chart.js
-- Tailwind CSS
-- TypeScript
-
-## Getting Started
-
-1. Install dependencies:
 ```bash
-npm install
+# Pull the image
+docker pull zijunyi/connection-monitor:latest
+
+# Run the container
+docker run -p 3000:3000 zijunyi/connection-monitor:latest
 ```
 
-2. Run the development server:
+Visit [http://localhost:3000](http://localhost:3000) to view the dashboard.
+
+## Development Options
+
+### Using Docker Compose
 ```bash
+docker-compose up --build
+```
+
+### Traditional Development
+```bash
+# Install dependencies
+npm install
+
+# Run the development server
 npm run dev
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) to view the dashboard.
+## Build & Deploy
 
-## Development
+### Local Build
+```bash
+npm run build
+npm start
+```
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+### Docker Build
+```bash
+docker build -t connection-monitor .
+docker run -p 3000:3000 connection-monitor
+```
+
+## Tech Stack
+
+- Next.js
+- React
+- Chart.js
+- Tailwind CSS
+- TypeScript
+- Docker
